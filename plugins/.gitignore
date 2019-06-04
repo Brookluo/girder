@@ -35,3 +35,7 @@
 !vega/
 !virtual_folders/
 !worker/
+
+# add for the three plugins
+!hdf5_metadata_extractor/
+!mongo_search_datavault/
