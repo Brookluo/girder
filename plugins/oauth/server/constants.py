@@ -40,3 +40,6 @@ class PluginSettings(object):
 
     BOX_CLIENT_ID = 'oauth.box_client_id'
     BOX_CLIENT_SECRET = 'oauth.box_client_secret'
+
+    CILOGON_CLIENT_ID = 'oauth.cilogon_client_id'
+    CILOGON_CLIENT_SECRET = 'oauth.cilogon_client_secret'
