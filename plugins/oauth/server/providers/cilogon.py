@@ -24,13 +24,14 @@ from girder.exceptions import RestException
 from girder.models.setting import Setting
 from .base import ProviderBase
 from .. import constants
+import json
 
 
 class CILogon(ProviderBase):
     _AUTH_URL = 'https://cilogon.org/authorize'
     _TOKEN_URL = 'https://cilogon.org/oauth2/token'
     _API_USER_URL = 'https://cilogon.org/oauth2/userinfo'
-    _AUTH_SCOPES = ['openid']
+    _AUTH_SCOPES = ['openid', 'email', 'profile']
     def getClientIdSetting(self):
         return Setting().get(constants.PluginSettings.CILOGON_CLIENT_ID)
 
@@ -42,22 +43,22 @@ class CILogon(ProviderBase):
         clientId = Setting().get(constants.PluginSettings.CILOGON_CLIENT_ID)
 
         if clientId is None:
-            raise Exception('No Box client ID setting is present.')
+            raise Exception('No CILogon client ID setting is present.')
 
         callbackUrl = '/'.join((getApiUrl(), 'oauth', 'cilogon', 'callback'))
-
+        # TODO here is the format bug that caused the error
         query = urllib.parse.urlencode({
-            # 'response_type': 'code',
+            'response_type': 'code',
             'client_id': clientId,
             'redirect_uri': callbackUrl,
             'state': state,
-            'scope': ','.join(cls._AUTH_SCOPES)
+            'scope': ' '.join(cls._AUTH_SCOPES)
         })
         return '%s?%s' % (cls._AUTH_URL, query)
 
     def getToken(self, code):
         params = {
-            # 'grant_type': 'authorization_code',
+            'grant_type': 'authorization_code',
             'code': code,
             'client_id': self.clientId,
             'client_secret': self.clientSecret,
@@ -67,6 +68,7 @@ class CILogon(ProviderBase):
         resp = self._getJson(method='POST', url=self._TOKEN_URL,
                              data=params,
                              headers={'Accept': 'application/json'})
+
         if 'error' in resp:
             raise RestException(
                 'Got an error exchanging token from provider: "%s".' % resp,
@@ -78,19 +80,24 @@ class CILogon(ProviderBase):
             'Authorization': 'Bearer %s' % token['access_token'],
             'Accept': 'application/json'
         }
+        data = {
+            'access_token': '%s' % token['access_token']
+        }
 
         # Get user's email address
-        resp = self._getJson(method='GET', url=self._API_USER_URL, headers=headers)
-        email = resp.get('login')
+        resp = self._getJson(method='POST', url=self._API_USER_URL, data=data, headers=headers)
+        email = resp.get('email')
         if not email:
+            print(resp)
             raise RestException(
-                'Box did not return user information.', code=502)
+                'CILogon did not return user information.', code=502)
 
         # Get user's OAuth2 ID, login, and name
-        oauthId = resp.get('id')
+        # Using the NetID for the oauthID
+        oauthId = email.split("@")[0]
         if not oauthId:
-            raise RestException('Box did not return a user ID.', code=502)
+            raise RestException('CILOGON did not return a user ID.', code=502)
 
-        names = resp.get('name').split()
-        firstName, lastName = names[0], names[-1]
+        firstName = resp.get("given_name")
+        lastName = resp.get("family_name")
         return self._createOrReuseUser(oauthId, email, firstName, lastName)
