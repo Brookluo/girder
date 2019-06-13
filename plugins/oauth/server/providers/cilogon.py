@@ -76,16 +76,16 @@ class CILogon(ProviderBase):
         return resp
 
     def getUser(self, token):
-        # headers = {
-        #     'Authorization': 'Bearer %s' % token['access_token'],
-        #     'Accept': 'application/json'
-        # }
+        headers = {
+            'Authorization': 'Bearer %s' % token['access_token'],
+            'Accept': 'application/json'
+        }
         data = {
             'access_token': '%s' % token['access_token']
         }
 
         # Get user's email address
-        resp = self._getJson(method='POST', url=self._API_USER_URL, data=data)
+        resp = self._getJson(method='POST', url=self._API_USER_URL, data=data, headers=headers)
         email = resp.get('email')
         if not email:
             print(resp)

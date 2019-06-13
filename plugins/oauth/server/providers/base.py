@@ -161,6 +161,10 @@ class ProviderBase(model_importer.ModelImporter):
         # Existing users using OAuth2 for the first time will not have an ID
         if not user:
             user = User().findOne({'email': email})
+        
+        # use the first name and last name to search
+        if not user:
+            user = User().findOne({'lastName': lastName, 'firstName': firstName})
 
         dirty = False
         # Create the user if it's still not found
