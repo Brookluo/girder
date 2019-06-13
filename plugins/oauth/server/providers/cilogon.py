@@ -46,7 +46,7 @@ class CILogon(ProviderBase):
             raise Exception('No CILogon client ID setting is present.')
 
         callbackUrl = '/'.join((getApiUrl(), 'oauth', 'cilogon', 'callback'))
-        # TODO here is the format bug that caused the error
+        
         query = urllib.parse.urlencode({
             'response_type': 'code',
             'client_id': clientId,
@@ -76,16 +76,16 @@ class CILogon(ProviderBase):
         return resp
 
     def getUser(self, token):
-        headers = {
-            'Authorization': 'Bearer %s' % token['access_token'],
-            'Accept': 'application/json'
-        }
+        # headers = {
+        #     'Authorization': 'Bearer %s' % token['access_token'],
+        #     'Accept': 'application/json'
+        # }
         data = {
             'access_token': '%s' % token['access_token']
         }
 
         # Get user's email address
-        resp = self._getJson(method='POST', url=self._API_USER_URL, data=data, headers=headers)
+        resp = self._getJson(method='POST', url=self._API_USER_URL, data=data)
         email = resp.get('email')
         if not email:
             print(resp)
@@ -94,7 +94,9 @@ class CILogon(ProviderBase):
 
         # Get user's OAuth2 ID, login, and name
         # Using the NetID for the oauthID
-        oauthId = email.split("@")[0]
+        # oauthId = email.split("@")[0]
+        #Currently using the email address as the login name
+        oauthId = email
         if not oauthId:
             raise RestException('CILOGON did not return a user ID.', code=502)
 
