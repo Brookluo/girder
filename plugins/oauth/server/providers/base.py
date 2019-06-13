@@ -163,8 +163,8 @@ class ProviderBase(model_importer.ModelImporter):
             user = User().findOne({'email': email})
         
         # use the first name and last name to search
-        if not user:
-            user = User().findOne({'lastName': lastName, 'firstName': firstName})
+        # if not user:
+        #     user = User().findOne({'lastName': lastName, 'firstName': firstName})
 
         dirty = False
         # Create the user if it's still not found
