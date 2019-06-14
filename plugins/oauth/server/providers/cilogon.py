@@ -88,17 +88,14 @@ class CILogon(ProviderBase):
         resp = self._getJson(method='POST', url=self._API_USER_URL, data=data, headers=headers)
         email = resp.get('email')
         if not email:
-            print(resp)
             raise RestException(
                 'CILogon did not return user information.', code=502)
 
         # Get user's OAuth2 ID, login, and name
-        # Using the NetID for the oauthID
-        # oauthId = email.split("@")[0]
-        #Currently using the email address as the login name
-        oauthId = email
+        # Using the openID as the oauthID
+        oauthId = resp.get('sub')
         if not oauthId:
-            raise RestException('CILOGON did not return a user ID.', code=502)
+            raise RestException('CILogon did not return a user ID.', code=502)
 
         firstName = resp.get("given_name")
         lastName = resp.get("family_name")
