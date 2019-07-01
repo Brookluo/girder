@@ -1,0 +1,62 @@
+.g-search-list-header
+  .g-search-pagination
+
+.g-search-list-container
+  .col-md-3.col-md-offset-1
+    h1.display-4.m-b-2 Metadata Search
+    form(method='GET' action='http://localhost:8080/api/v1/resource/mongo_search')
+      table.search-table 
+        thead
+          th(style="text-align: center;font-weight: bold;font-size: 15pt;") Metadata
+          th(style="text-align: center;font-weight: bold;font-size: 15pt;") lower limit
+          th(style="text-align: center;font-weight: bold;font-size: 15pt;") upper limit
+        tbody
+          tr 
+            td 
+              label(for="mass") mass:
+            td
+              input.form-control(type="number" name="mass" id="mass_lower" style="width: 200pt;")
+            td
+              input.form-control(type="number" name="mass" id="mass_upper" style="width: 200pt;")
+          tr 
+            td 
+              label(for="spin") spin:
+            td
+              input.form-control(type="number" name="spin" id="spin_lower" style="width: 200pt;")
+            td
+              input.form-control(type="number" name="spin" id="spin_upper" style="width: 200pt;")
+          tr 
+            td 
+              label(for="Lmax") Lmax:
+            td
+              input.form-control(type="number" name="Lmax" id="lmax_lower" style="width: 200pt;")
+            td
+              input.form-control(type="number" name="Lmax" id="lmax_upper" style="width: 200pt;")
+          tr 
+            td 
+              label(for="eccentricity") eccentricity:
+            td
+              input.form-control(type="number" name="ecc" id="ecc_lower" style="width: 200pt;")
+            td
+              input.form-control(type="number" name="ecc" id="ecc_upper" style="width: 200pt;") 
+          tr 
+            td 
+              label(for="LNx") LNx:
+            td
+              input.form-control(type="number" name="LNx" id="lnx_lower" style="width: 200pt;")
+            td
+              input.form-control(type="number" name="LNx" id="lnx_upper" style="width: 200pt;")
+              
+      button.btn.btn-primary(type='submit') Search 
+
+
+
+
+          //- div.form-group
+          //-   label(for='') Email
+          //-   input.form-control(type='text' id='email' placeholder='email' name='email')
+          //- div.form-group
+          //-   label(for='password') Password
+          //-   input.form-control(type='password' id='password' placeholder='password' name='password')
+          //- button.btn.btn-primary(type='submit') Search 
+
