@@ -1,9 +1,5 @@
-import ControlWidget from './ControlWidget';
-import ControlsPanel from './ControlsPanel';
-import Panel from './Panel';
+import SearchView from './SearchView';
 
 export {
-    ControlWidget,
-    ControlsPanel,
-    Panel
+    SearchView
 };

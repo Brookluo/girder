@@ -6,64 +6,9 @@ import _ from 'underscore';
 import router from 'girder/router';
 import events from 'girder/events';
 
-import ItemModel from 'girder/models/ItemModel';
-import JobModel from 'girder_plugins/jobs/models/JobModel';
-
-import SearchListView from './views/SearchListView';
-import TaskRunView from './views/TaskRunView';
+import SearchView from './views/SearchView';
 
 router.route('mongo_search', 'itemSearchList', () => {
-    events.trigger('g:navigateTo', SearchListView);
+    events.trigger('g:navigateTo', SearchView);
     events.trigger('g:highlightItem', 'SearchsView');
 });
-/*
-router.route('item_task/:id/run', (id, params) => {
-    const itemTask = new ItemModel({_id: id});
-    let job = null;
-    let inputItem = null;
-    const promises = [itemTask.fetch()];
-
-    if (params.fromJob) {
-        job = new JobModel({_id: params.fromJob});
-        promises.push(job.fetch());
-    }
-
-    if (params.itemId) {
-        inputItem = new ItemModel({_id: params.itemId});
-        promises.push(inputItem.fetch());
-    }
-
-    $.when(...promises).done(() => {
-        let initialValues = {};
-
-        if (params.fromJob && job.has('itemTaskBindings')) {
-            initialValues = job.get('itemTaskBindings');
-        }
-
-        if (params.itemId) {
-            let itemTaskSpec = itemTask.get('meta').itemTaskSpec;
-
-            let fileInputSpecs = _.where(itemTaskSpec.inputs, {'type': 'file'});
-            if (fileInputSpecs.length === 1) {
-                let fileInputSpec = fileInputSpecs[0];
-                initialValues.inputs = initialValues.inputs || {};
-                initialValues.inputs[fileInputSpec.id] = {
-                    mode: 'girder',
-                    resource_type: 'item',
-                    id: params.itemId,
-                    fileName: inputItem.name()
-                };
-            }
-        }
-
-        events.trigger('g:navigateTo', TaskRunView, {
-            model: itemTask,
-            initialValues: initialValues
-        }, {
-            renderNow: true
-        });
-    }).fail(() => {
-        router.navigate('item_tasks', {trigger: true, replace: true});
-    });
-});
-*/

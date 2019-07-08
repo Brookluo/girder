@@ -3,18 +3,20 @@ import PaginateWidget from 'girder/views/widgets/PaginateWidget';
 import { renderMarkdown } from 'girder/misc';
 
 import ItemTaskCollection from '../collections/ItemTaskCollection';
-import template from '../templates/paginateTasksWidget.pug';
+import template from '../templates/paginateSearchWidget.pug';
 import '../stylesheets/paginateTasksWidget.styl';
 
 var MongoSearchWidget = View.extend({
+    // first try change this part to hook with the submit button
     events: {
-        'click .g-execute-task-link': function (event) {
-            const taskId = $(event.currentTarget).data('taskId');
-            const task = this.collection.get(taskId);
-            this.trigger('g:selected', {
-                task: task
-            });
-        }
+        // 'click .g-execute-task-link': function (event) {
+        //     const taskId = $(event.currentTarget).data('taskId');
+        //     const task = this.collection.get(taskId);
+        //     this.trigger('g:selected', {
+        //         task: task
+        //     });
+        // }
+        'click .g-'
     },
     /**
      * @param {Function} [settings.itemUrlFunc] A callback function, which if provided,

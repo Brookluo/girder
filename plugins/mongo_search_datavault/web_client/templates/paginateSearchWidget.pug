@@ -1,10 +1,10 @@
-.g-search-list-header
+//- .g-search-list-header
   .g-search-pagination
 
-.g-search-list-container
+.g-search-container
   .col-md-3.col-md-offset-1
     h1.display-4.m-b-2 Metadata Search
-    form(method='GET' action='http://localhost:8080/api/v1/resource/mongo_search')
+    form
       table.search-table 
         thead
           th(style="text-align: center;font-weight: bold;font-size: 15pt;") Metadata
@@ -46,17 +46,7 @@
               input.form-control(type="number" name="LNx" id="lnx_lower" style="width: 200pt;")
             td
               input.form-control(type="number" name="LNx" id="lnx_upper" style="width: 200pt;")
-              
+           
       button.btn.btn-primary(type='submit') Search 
 
-
-
-
-          //- div.form-group
-          //-   label(for='') Email
-          //-   input.form-control(type='text' id='email' placeholder='email' name='email')
-          //- div.form-group
-          //-   label(for='password') Password
-          //-   input.form-control(type='password' id='password' placeholder='password' name='password')
-          //- button.btn.btn-primary(type='submit') Search 
 

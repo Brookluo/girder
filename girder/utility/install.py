@@ -206,7 +206,7 @@ def runWebBuild(wd=None, dev=False, npm='npm', allPlugins=False, plugins=None, p
 
     wd = wd or constants.PACKAGE_DIR
     env = 'dev' if dev else 'prod'
-    quiet = '--no-progress=false' if sys.stdout.isatty() else '--no-progress=true'
+    quiet = '--no-progress=false' if hasattr(sys.stdout, "isatty") and sys.stdout.isatty() else '--no-progress=true'
     commands = [
         npmInstall,
         [npm, 'run', 'build', '--',
