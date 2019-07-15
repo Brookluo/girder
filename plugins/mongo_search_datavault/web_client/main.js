@@ -1,5 +1,5 @@
 /* eslint-disable import/first, import/order */
-
+/*jshint esversion: 6 */ 
 import $ from 'jquery';
 import _ from 'underscore';
 
@@ -8,6 +8,7 @@ import GlobalNavView from 'girder/views/layout/GlobalNavView';
 import { registerPluginNamespace } from 'girder/pluginUtils';
 import * as mongoSearch from 'girder_plugins/mongo_search_datavault';
 import router from 'girder/router';
+import SearchView from './views/SearchView';
 
 import './routes';
 
@@ -19,7 +20,12 @@ wrap(GlobalNavView, 'initialize', function (initialize) {
 
     this.defaultNavItems.push({
         name: 'Search',
-        icon: 'icon-cog-alt',
+        icon: 'icon-search',
         target: 'mongo_search'
     });
 });
+
+SearchView.prototype.events['click .g-search-submit'] = function (event) {
+    alert("finished");
+    this.render();
+};

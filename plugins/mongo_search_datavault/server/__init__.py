@@ -1,5 +1,6 @@
 
 import bson.json_util
+import json
 
 from girder import events
 from girder.constants import AccessType
@@ -33,6 +34,7 @@ class ResourceExt(Resource):
         }
         limit, offset, sort = self.getPagingParameters(params, 'name')
         coll = params['type']
+        # coll = 'item'
 
         events.trigger('mongo_search.allowed_collections', info=allowed)
 
@@ -41,6 +43,7 @@ class ResourceExt(Resource):
 
         try:
             query = bson.json_util.loads(params['q'])
+            # raise Exception(json.loads(params['q']))
         except ValueError:
             raise RestException('The query parameter must be a JSON object.')
 
@@ -48,12 +51,15 @@ class ResourceExt(Resource):
         if hasattr(model, 'filterResultsByPermission'):
             cursor = model.find(
                 query, fields=allowed[coll] + ['public', 'access'])
-            return list(model.filterResultsByPermission(
+            return {"item": list(model.filterResultsByPermission(
                 cursor, user=self.getCurrentUser(), level=AccessType.READ,
-                limit=limit, offset=offset, removeKeys=('public', 'access')))
+                limit=limit, offset=offset, removeKeys=('public', 'access')))}
         else:
-            return list(model.find(query, fields=allowed[coll], limit=limit,
-                                   offset=offset))
+            return {"item": list(model.find(query, fields=allowed[coll], limit=limit,
+                                            offset=offset))}
+    # def formatCorrect(query):
+    #     for k, v in query.items():
+    #         if
 
 
 def load(info):

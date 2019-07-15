@@ -1,5 +1,5 @@
 /* eslint-disable import/first */
-
+/*jshint esversion: 6 */ 
 import $ from 'jquery';
 import _ from 'underscore';
 

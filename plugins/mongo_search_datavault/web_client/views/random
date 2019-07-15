@@ -1,0 +1,2 @@
+/api/v1/resource/mongo_search?type=item&q=%7B%22meta.mass1%22%3A%7B%22%24gt%22%3A%220.4%22%2C%22%24lt%22%3A%220.6%22%7D%7D HTTP/1.1" 200 12 "http://localhost:8080/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:67.0) Gecko/20100101 Firefox/67.0
+/api/v1/resource/mongo_search?type=item&q=%7B%22meta.mass1%22%3A%7B%22%24gt%22%3A0.4%2C%20%22%24lt%22%3A0.6%7D%7D HTTP/1.1" 200 258 "http://localhost:8080/api/v1" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:67.0) Gecko/20100101 Firefox/67.0

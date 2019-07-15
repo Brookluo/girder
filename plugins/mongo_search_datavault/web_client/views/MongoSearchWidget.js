@@ -1,3 +1,5 @@
+
+/*jshint esversion: 6 */ 
 import View from 'girder/views/View';
 import PaginateWidget from 'girder/views/widgets/PaginateWidget';
 import { renderMarkdown } from 'girder/misc';
@@ -16,7 +18,7 @@ var MongoSearchWidget = View.extend({
         //         task: task
         //     });
         // }
-        'click .g-'
+        // 'click .g-'
     },
     /**
      * @param {Function} [settings.itemUrlFunc] A callback function, which if provided,

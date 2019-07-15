@@ -1,10 +1,10 @@
-//- .g-search-list-header
-  .g-search-pagination
-
-.g-search-container
+.g-mongo-search-header
+  //- .g-search-pagination
   .col-md-3.col-md-offset-1
+
+.g-mongo-search-container
     h1.display-4.m-b-2 Metadata Search
-    form
+    form.g-mongo-search-form
       table.search-table 
         thead
           th(style="text-align: center;font-weight: bold;font-size: 15pt;") Metadata
@@ -13,40 +13,57 @@
         tbody
           tr 
             td 
-              label(for="mass") mass:
+              label(for="mass1") mass1:
             td
-              input.form-control(type="number" name="mass" id="mass_lower" style="width: 200pt;")
+              input.form-control(type="number" name="mass1_lower" id="mass1_lower" style="width: 200pt;")
             td
-              input.form-control(type="number" name="mass" id="mass_upper" style="width: 200pt;")
+              input.form-control(type="number" name="mass1_upper" id="mass1_upper" style="width: 200pt;")
           tr 
             td 
-              label(for="spin") spin:
+              label(for="spin1x") spin1x:
             td
-              input.form-control(type="number" name="spin" id="spin_lower" style="width: 200pt;")
+              input.form-control(type="number" name="spin1x_lower" id="spin1x_lower" style="width: 200pt;")
             td
-              input.form-control(type="number" name="spin" id="spin_upper" style="width: 200pt;")
-          tr 
-            td 
-              label(for="Lmax") Lmax:
-            td
-              input.form-control(type="number" name="Lmax" id="lmax_lower" style="width: 200pt;")
-            td
-              input.form-control(type="number" name="Lmax" id="lmax_upper" style="width: 200pt;")
-          tr 
-            td 
-              label(for="eccentricity") eccentricity:
-            td
-              input.form-control(type="number" name="ecc" id="ecc_lower" style="width: 200pt;")
-            td
-              input.form-control(type="number" name="ecc" id="ecc_upper" style="width: 200pt;") 
-          tr 
-            td 
-              label(for="LNx") LNx:
-            td
-              input.form-control(type="number" name="LNx" id="lnx_lower" style="width: 200pt;")
-            td
-              input.form-control(type="number" name="LNx" id="lnx_upper" style="width: 200pt;")
+              input.form-control(type="number" name="spin1x_upper" id="spin1x_upper" style="width: 200pt;")
+          //- tr 
+          //-   td 
+          //-     label(for="Lmax") Lmax:
+          //-   td
+          //-     input.form-control(type="number" name="Lmax_lower" id="lmax_lower" style="width: 200pt;")
+          //-   td
+          //-     input.form-control(type="number" name="Lmax_upper" id="lmax_upper" style="width: 200pt;")
+          //- tr 
+          //-   td 
+          //-     label(for="eccentricity") eccentricity:
+          //-   td
+          //-     input.form-control(type="number" name="ecc_lower" id="ecc_lower" style="width: 200pt;")
+          //-   td
+          //-     input.form-control(type="number" name="ecc_upper" id="ecc_upper" style="width: 200pt;") 
+          //- tr 
+          //-   td 
+          //-     label(for="LNx") LNx:
+          //-   td
+          //-     input.form-control(type="number" name="LNx_lower" id="lnx_lower" style="width: 200pt;")
+          //-   td
+          //-     input.form-control(type="number" name="LNx_upper" id="lnx_upper" style="width: 200pt;")
            
-      button.btn.btn-primary(type='submit') Search 
+      a.g-submit-search.btn.btn-primary Search
+      //- button.btn.btn-primary(type='submit') Search 
+      
+.g-search-results-header-container
+  .g-search-results-title-container
+    i.g-search-results-title-element.icon-search
+    span.g-search-results-title.g-search-results-title-element Results : #{query}
+  .g-search-results-header
+    .g-search-results-advance-search
+
+.g-search-results-container
+
+.g-search-pending
+  i.icon-spin4.animate-spin
+
+.g-search-no-results(style='display: none;')
+  i.icon-block
+  |  No results found
 
 
