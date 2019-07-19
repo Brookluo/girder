@@ -14,29 +14,46 @@ import { tmpdir } from 'os';
 var SearchView = View.extend({
     // when click the submit button, render the information
     events: {
-        'click .g-submit-search': function (event) {
+        'click .g-submit-search': function (e) {
             // const data = $(event.currentTarget).data('task');
             // here to parse the data and then send the request
+            this.$('.g-search-results-header-container').show();
+            this.$('.g-search-no-results').hide();
             var query = this.$('.g-mongo-search-form');
-            var jsondata = this._processData(query.serializeArray());
-            this._request = restRequest({
-                url: 'resource/mongo_search',
-                data: {
-                    type: 'item',
-                    q: JSON.stringify(jsondata),
-                    // mode: this._mode,
-                    // limit: this.pageLimit
-                }
-            });
-            this.render();
-        }
+            var payload = this._processData(query.serializeArray());
+            if(!_.isEmpty(payload)) {
+                this.$('.g-search-pending').show();
+                this._request = restRequest({
+                    url: 'resource/mongo_search',
+                    data: {
+                        type: 'item',
+                        q: JSON.stringify(payload),
+                        // mode: this._mode,
+                        // limit: this.pageLimit
+                    }
+                });
+                this.render();
+            }
+            else{
+                this.$('.g-search-no-results').show();
+            }
+        },
+
+        // 'keydown .g-search-table': function (e) {
+        //     var key = e.which || e.keyCode;
+        //     if(key == 13) {
+        //         e.preventDefault();
+        //         alert("enter");
+        //     }
+        // }
     },
 
     initialize: function () {
         this.$el.html(SearchTemplate({
         //    $('g-search-pending').hide()
         }));
-
+        this.$('.g-search-results-header-container').hide();
+        this.$('.g-search-pending').hide();
     },
 
     _processData: function (arr) {
@@ -76,6 +93,7 @@ var SearchView = View.extend({
         this._subviews = {};
         this._request
             .done((results) => {
+                this.$('.g-search-results-header-container').show();
                 this.$('.g-search-pending').hide();
                 this.$('.g-search-results-container').empty();
                 const resultTypes =  _.keys(results);
