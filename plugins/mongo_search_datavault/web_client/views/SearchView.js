@@ -3,11 +3,11 @@ import $ from 'jquery';
 import _ from 'underscore';
 
 import View from 'girder/views/View';
-import { restRequest } from 'girder/rest';
+import { restRequest, getApiRoot } from 'girder/rest';
 import SearchTemplate from '../templates/paginateSearchWidget.pug';
 import ResultTemplate from '../templates/SearchResult.pug';
 import '../stylesheets/paginateSearchWidget.styl';
-import { tmpdir } from 'os';
+// import { tmpdir } from 'os';
 // import SearchPaginateWidget from 'girder/views/widgets/SearchPaginateWidget';
 // import SearchFieldWidget from 'girder/views/widgets/SearchFieldWidget';
 
@@ -39,6 +39,26 @@ var SearchView = View.extend({
             }
         },
 
+        'click .g-download-result': function (e) {
+            var box = this.$('.g-search-check-box');
+            var payload = {};
+            payload["item"] = [];
+            for (var i = 0; i < box.length; ++i) {
+                if (box[i].checked) {
+                    payload["item"].push(this._results["item"][i]._id);
+                }
+            }
+            if (payload["item"].length) {
+                var url = getApiRoot() + '/resource/download';
+                var data = {resources: JSON.stringify(payload)};
+                this._redirectViaForm('POST', url, data);
+            }
+        },
+
+        'click .g-select-result': function(e) {
+            var box = this.$('.g-search-check-box');
+            for (var i = 0; i < box.length; ++i) box[i].checked = true;
+        }
         // 'keydown .g-search-table': function (e) {
         //     var key = e.which || e.keyCode;
         //     if(key == 13) {
@@ -56,20 +76,29 @@ var SearchView = View.extend({
         this.$('.g-search-pending').hide();
     },
 
+    _redirectViaForm: function (method, url, data) {
+        var form = $('<form/>').attr({action: url, method: method});
+        _.each(data, function (value, key) {
+            form.append($('<input/>').attr({type: 'text', name: key, value: value}));
+        });
+        // $(form).submit() will *not* work w/ Firefox (http://stackoverflow.com/q/7117084/250457)
+        $(form).appendTo('body').submit().remove();
+    },
+
     _processData: function (arr) {
         var retval = {};
-        for(var i = 0; i < arr.length; i++) {
+        for (var i = 0; i < arr.length; i++) {
             if(!arr[i].value) continue;
 
             var temp = arr[i].name.split("_");
             var key = "meta." + temp[0];
-            if(!retval[key]) {
+            if (!retval[key]) {
                 retval[key] = {};
             }
-            if(temp[1] == "lower") {
+            if (temp[1] == "lower") {
                 retval[key]["$gt"] = parseFloat(arr[i].value);
             }
-            else if(temp[1] == "upper") {
+            else if (temp[1] == "upper") {
                 retval[key]["$lt"] = parseFloat(arr[i].value);
             }
             // console.log("the array " + key + retval[key]);
@@ -98,7 +127,8 @@ var SearchView = View.extend({
                 this.$('.g-search-results-container').empty();
                 const resultTypes =  _.keys(results);
                 const orderedTypes = this._getTypeOrdering(resultTypes);
-                // console.log("results", results, resultTypes, orderedTypes);
+                console.log("results", results, resultTypes, orderedTypes);
+                this._results = results;
                 _.each(orderedTypes, (type) => {
                     if (results[type].length) {
                         // console.log("the type: ", type);

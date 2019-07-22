@@ -2,12 +2,15 @@
   i.g-search-result-type-header.g-search-result-type-icon(class=`icon-${icon}`)
   .g-search-result-type-header.g-search-results-type-title
     | #{collectionName}
+a.g-select-result.btn.btn-primary Select All
 ul.g-search-results-type
   each element in results
     li.g-search-result
+      input(type="checkbox").g-search-check-box
       a(href=`#${type}/${element._id}`)
         if type === 'user'
           | #{element.firstName} #{element.lastName} (#{element.login})
         else
           | #{element.name}
 .g-search-results-paginate(id=`${type}Paginate`)
+a.g-download-result.btn.btn-primary Download
