@@ -59,6 +59,7 @@ var SearchResultsView = View.extend({
 
                 const resultTypes =  _.keys(results);
                 const orderedTypes = this._getTypeOrdering(resultTypes);
+                // console.log("search results", results, resultTypes, orderedTypes);
                 _.each(orderedTypes, (type) => {
                     if (results[type].length) {
                         this._subviews[type] = new SearchResultsTypeView({
