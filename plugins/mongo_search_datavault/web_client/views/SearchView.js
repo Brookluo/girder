@@ -58,7 +58,20 @@ var SearchView = View.extend({
         'click .g-select-result': function(e) {
             var box = this.$('.g-search-check-box');
             for (var i = 0; i < box.length; ++i) box[i].checked = true;
-        }
+        },
+
+        'click .g-unselect-result': function(e) {
+            var box = this.$('.g-search-check-box');
+            for (var i = 0; i < box.length; ++i) box[i].checked = false;
+        },
+
+        'click .g-invert-selection': function(e) {
+            var box = this.$('.g-search-check-box');
+            for (var i = 0; i < box.length; ++i) {
+                if (box[i].checked == false) box[i].checked = true;
+                else box[i].checked = false;
+            }
+        },
         // 'keydown .g-search-table': function (e) {
         //     var key = e.which || e.keyCode;
         //     if(key == 13) {
