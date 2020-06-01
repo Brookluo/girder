@@ -24,6 +24,9 @@ from girder.models.user import User
 from girder.utility import setting_utilities
 from . import rest, constants, providers
 
+# fix from Kacper
+from girder.exceptions import AccessException 
+
 
 @setting_utilities.validator(constants.PluginSettings.PROVIDERS_ENABLED)
 def validateProvidersEnabled(doc):
@@ -76,6 +79,19 @@ def checkOauthUser(event):
             'You don\'t have a password. Please log in with %s, or use the '
             'password reset link.' % prettyProviderNames)
 
+def enforce_policy(event):
+    user = event.info["user"]
+    # This has the same behavior as User.canLogin, but returns more
+    # detailed error messages
+    if user.get("status", "enabled") == "disabled":
+        raise AccessException("Account is disabled.", extra="disabled")
+
+    if User().emailVerificationRequired(user):
+        raise AccessException("Email verification required.", extra="emailVerification")
+
+    if User().adminApprovalRequired(user):
+        raise AccessException("Account approval required.", extra="accountApproval")
+
 
 def load(info):
     User().ensureIndex((
@@ -84,7 +100,9 @@ def load(info):
     User().reconnect()
 
     events.bind('no_password_login_attempt', 'oauth', checkOauthUser)
+    events.bind("oauth.auth_callback.after", "oauth", enforce_policy)
 
     info['apiRoot'].oauth = rest.OAuth()
 
     SettingDefault.defaults[constants.PluginSettings.PROVIDERS_ENABLED] = []
+
